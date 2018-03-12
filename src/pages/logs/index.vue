@@ -22,10 +22,10 @@ export default {
       logs: []
     }
   },
-
-  created () {
+  mounted () {
     const logs = (wx.getStorageSync('logs') || [])
     this.logs = logs.map(log => formatTime(new Date(log)))
+    console.log(this.$root.$mp.query.id)
   }
 }
 </script>
