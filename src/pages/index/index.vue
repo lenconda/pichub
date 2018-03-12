@@ -32,11 +32,9 @@ export default {
       userInfo: {}
     }
   },
-
   components: {
     card
   },
-
   methods: {
     bindViewTap () {
       const url = '../logs/logs'
@@ -49,6 +47,7 @@ export default {
           wx.getUserInfo({
             success: (res) => {
               this.userInfo = res.userInfo
+              console.log(res.userInfo)
             }
           })
         }
@@ -58,10 +57,10 @@ export default {
       console.log('clickHandle:', msg, ev)
     }
   },
-
-  created () {
+  mounted () {
     // 调用应用实例的方法获取全局数据
     this.getUserInfo()
+    console.log(this.$root.$mp.query.data)
   }
 }
 </script>

@@ -16,7 +16,7 @@ export default {
   components: {
     card
   },
-
+  
   data () {
     return {
       logs: []

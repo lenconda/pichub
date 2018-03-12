@@ -5,8 +5,8 @@
       <button @click="increment">+</button>
       <button @click="decrement">-</button>
     </p>
-
-    <a href="/pages/index/index" class="home">去往首页</a>
+    <navigator class="navgitor" url="/pages/index/index">首页</navigator>
+    <a href="/pages/index/index?data=123" class="home">去往首页</a>
   </div>
 </template>
 
@@ -31,17 +31,16 @@ export default {
 }
 
 </script>
-<style>
+<style lang="less" scoped>
 .counter-warp {
   text-align: center;
   margin-top: 100px;
+  .home {
+    display: inline-block;
+    margin: 100px auto;
+    padding: 5px 10px;
+    color: blue;
+    border: 1px solid blue;
+  }
 }
-.home {
-  display: inline-block;
-  margin: 100px auto;
-  padding: 5px 10px;
-  color: blue;
-  border: 1px solid blue;
-}
-
 </style>
