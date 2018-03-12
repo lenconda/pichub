@@ -1,6 +1,6 @@
 <template>
   <div class="container" @click="clickHandle('test click', $event)">
-
+    <button class="btn">Fuck you</button>
     <div class="userinfo" @click="bindViewTap">
       <img class="userinfo-avatar" v-if="userInfo.avatarUrl" :src="userInfo.avatarUrl" background-size="cover" />
       <div class="userinfo-nickname">
@@ -61,36 +61,53 @@ export default {
     // 调用应用实例的方法获取全局数据
     this.getUserInfo()
     console.log(this.$root.$mp.query.data)
+  },
+  onLoad () {
+    console.log('fuck you index')
   }
 }
 </script>
 
-<style scoped>
-.userinfo {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.userinfo-avatar {
-  width: 128rpx;
-  height: 128rpx;
-  margin: 20rpx;
-  border-radius: 50%;
-}
-
-.userinfo-nickname {
-  color: #aaa;
-}
-
-.usermotto {
-  margin-top: 150px;
-}
-
-.form-control {
-  display: block;
-  padding: 0 12px;
-  margin-bottom: 5px;
-  border: 1px solid #ccc;
+<style lang="less" scoped>
+.container {
+  color: #fff;
+  background-color: #000;
+  .userinfo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    .userinfo-avatar {
+      width: 64px;
+      height: 64px;
+      margin: 10px;
+      border-radius: 50%;
+    }
+    .userinfo-nickname {
+      color: #aaa;
+    }
+  }
+  .usermotto {
+    margin-top: 150px;
+  }
+  .form-control {
+    display: block;
+    padding: 0 12px;
+    margin-bottom: 5px;
+    border: 1px solid #ccc;
+  }
+  .btn {
+    width: 300px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    color: #333;
+    &:hover {
+      background-color: #e6e6e6;
+      border-color: #adadad;
+    }
+    &:focus {
+      background-color: #e6e6e6;
+      border-color: #8c8c8c;
+    }
+  }
 }
 </style>
