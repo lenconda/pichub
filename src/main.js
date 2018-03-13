@@ -30,13 +30,13 @@ export default {
           selectedIconPath: 'static/icons/home.png'
         }, 
         {
-          pagePath: 'pages/counter/counter',
+          pagePath: 'pages/trend/trend',
           text: '趋势',
           iconPath: 'static/icons/mark-o.png',
           selectedIconPath: 'static/icons/mark.png'
         },
         {
-          pagePath: 'pages/logs/logs',
+          pagePath: 'pages/mine/mine',
           text: '我的',
           iconPath: 'static/icons/mine-o.png',
           selectedIconPath: 'static/icons/mine.png'

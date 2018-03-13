@@ -6,6 +6,7 @@ app.$mount()
 
 export default {
   config: {
-    navigationBarTitleText: 'Fuck you'
+    enablePullDownRefresh: true,
+    navigationBarTitleText: '趋势'
   }
 }

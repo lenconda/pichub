@@ -6,6 +6,6 @@ app.$mount()
 
 export default {
   config: {
-    enablePullDownRefresh: true
+    navigationBarTitleText: '壁纸预览'
   }
 }

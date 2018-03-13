@@ -1,14 +1,14 @@
 <template>
   <scroll-view>
+    <navigator>
+      <div class="img-wrapper">
+        <img mode="widthFix" src="https://images.unsplash.com/photo-1518871886039-9597decd52af?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=484b1b55d541b5706c884331ff15d4da&auto=format&fit=crop&w=662&q=80" alt="">
+      </div>
+    </navigator>
     <navigator :url="['/pages/detail/detail']">
       <div class="img-wrapper">
         <span class="like" @tap.stop="like"></span>
-        <img mode="widthFix" src="https://images.unsplash.com/photo-1519316500492-7d95d2b8c462?ixlib=rb-0.3.5&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=1080&fit=max&ixid=eyJhcHBfaWQiOjIyNTM1fQ&s=630a9923eb46d1eab1dd3d3b1b623545" alt="">
-      </div>
-    </navigator>
-    <navigator>
-      <div class="img-wrapper">
-        <img mode="widthFix" src="https://images.unsplash.com/photo-1520468278-da8f5773bc53?ixlib=rb-0.3.5&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=1080&fit=max&ixid=eyJhcHBfaWQiOjIyNTM1fQ&s=813a782b2e303d0f85ba87e3907d0964" alt="">
+        <img mode="widthFix" src="https://images.unsplash.com/photo-1496134732667-ae8d2853a045?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=e4dd1c9106a69065ccfa21a36cfb53b1&auto=format&fit=crop&w=1350&q=80" alt="">
       </div>
     </navigator>
   </scroll-view>
@@ -30,8 +30,9 @@ export default {
       wx.login({
         success: () => {
           wx.getUserInfo({
-            success: res => {
+            success: (res) => {
               // this.userInfo = res.userInfo
+              console.log(res.userInfo)
             }
           })
         }
