@@ -70,6 +70,9 @@ export default {
 <style lang="less" scoped>
 scroll-view {
   navigator {
+    &.navigator-hover {
+      opacity: 1;
+    }
     .img-wrapper {
       width: 100%;
       position: relative;
