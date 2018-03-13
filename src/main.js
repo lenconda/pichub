@@ -25,20 +25,20 @@ export default {
       list: [
         {
           pagePath: 'pages/index/index',
-          // text: '首页',
+          text: '首页',
           iconPath: 'static/icons/home-o.png',
           selectedIconPath: 'static/icons/home.png'
         }, 
         {
           pagePath: 'pages/counter/counter',
-          // text: '计数器',
+          text: '趋势',
           iconPath: 'static/icons/mark-o.png',
           selectedIconPath: 'static/icons/mark.png'
         }, 
         
         {
           pagePath: 'pages/logs/logs',
-          // text: '日志',
+          text: '我的',
           iconPath: 'static/icons/mine-o.png',
           selectedIconPath: 'static/icons/mine.png'
         }

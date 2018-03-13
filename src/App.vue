@@ -29,5 +29,6 @@ export default {
 }
 page {
   height: 100%;
+  background-color: #000;
 }
 </style>

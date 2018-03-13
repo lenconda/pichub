@@ -1,5 +1,6 @@
 <template>
-  <div class="container" @click="clickHandle('test click', $event)">
+  <!-- <div class="container" @click="clickHandle('test click', $event)"> -->
+  <scroll-view>
     <img src="https://images.unsplash.com/photo-1496134732667-ae8d2853a045?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=e4dd1c9106a69065ccfa21a36cfb53b1&auto=format&fit=crop&w=1350&q=80" alt="">
     <img src="https://images.unsplash.com/photo-1496134732667-ae8d2853a045?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=e4dd1c9106a69065ccfa21a36cfb53b1&auto=format&fit=crop&w=1350&q=80" alt="">
     <img src="https://images.unsplash.com/photo-1496134732667-ae8d2853a045?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=e4dd1c9106a69065ccfa21a36cfb53b1&auto=format&fit=crop&w=1350&q=80" alt="">
@@ -10,7 +11,8 @@
     <img src="https://images.unsplash.com/photo-1496134732667-ae8d2853a045?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=e4dd1c9106a69065ccfa21a36cfb53b1&auto=format&fit=crop&w=1350&q=80" alt="">
     <img src="https://images.unsplash.com/photo-1496134732667-ae8d2853a045?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=e4dd1c9106a69065ccfa21a36cfb53b1&auto=format&fit=crop&w=1350&q=80" alt="">
     <img src="https://images.unsplash.com/photo-1496134732667-ae8d2853a045?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=e4dd1c9106a69065ccfa21a36cfb53b1&auto=format&fit=crop&w=1350&q=80" alt="">
-  </div>
+  </scroll-view>
+  <!-- </div> -->
 </template>
 
 <script>
@@ -55,17 +57,15 @@ export default {
   },
   onLoad () {
     console.log('fuck you index')
+  },
+  onReachBottom () {
+    console.log('触底')
   }
 }
 </script>
 
 <style lang="less" scoped>
-.container {
-  color: #fff;
-  background-color: #000;
-  height: 100%;
-  overflow-x: hidden;
-  overflow-y: auto;
+scroll-view {
   img {
     flex-shrink: 0;
     width: 100%;
