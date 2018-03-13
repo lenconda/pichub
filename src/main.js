@@ -34,8 +34,7 @@ export default {
           text: '趋势',
           iconPath: 'static/icons/mark-o.png',
           selectedIconPath: 'static/icons/mark.png'
-        }, 
-        
+        },
         {
           pagePath: 'pages/logs/logs',
           text: '我的',

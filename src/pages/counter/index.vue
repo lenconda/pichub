@@ -1,13 +1,12 @@
 <template>
-  <div class="counter-warp">
-    <p>Vuex counter：{{ count }}</p>
-    <p>
-      <button @click="increment">+</button>
-      <button @click="decrement">-</button>
-    </p>
-    <navigator class="navgitor" url="/pages/index/index">首页</navigator>
-    <a href="/pages/index/index?data=123" class="home">去往首页</a>
-  </div>
+  <scroll-view>
+    <div class="img-wrapper">
+      <img mode="widthFix" src="https://images.unsplash.com/photo-1509829208663-8d643bff6588?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=fb308905b6dcfa8695829e875a2221dd&auto=format&fit=crop&w=634&q=80" alt="">
+    </div>
+    <div class="img-wrapper">
+      <img mode="widthFix" src="https://images.unsplash.com/photo-1518973599587-370cea74a58a?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=a8e3737d10daccfb1374244f3968b39e&auto=format&fit=crop&w=1350&q=80" alt="">
+    </div>
+  </scroll-view>
 </template>
 
 <script>
@@ -32,15 +31,13 @@ export default {
 
 </script>
 <style lang="less" scoped>
-.counter-warp {
-  text-align: center;
-  margin-top: 100px;
-  .home {
-    display: inline-block;
-    margin: 100px auto;
-    padding: 5px 10px;
-    color: blue;
-    border: 1px solid blue;
+scroll-view {
+  .img-wrapper {
+    width: 100%;
+    img {
+      flex-shrink: 0;
+      width: 100%;
+    }
   }
 }
 </style>

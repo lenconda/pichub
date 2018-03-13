@@ -6,9 +6,6 @@ app.$mount()
 
 export default {
   config: {
-    enablePullDownRefresh: true
-  },
-  like: e => {
-    console.log('fuck you')
+    navigationBarTitleText: 'Fuck you'
   }
 }
