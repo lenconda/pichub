@@ -4,6 +4,9 @@
       <img :src="userInfo.avatarUrl" class="avatar">
       <span class="motto">{{ userInfo.nickName }}</span>
     </div>
+    <div class="favorites">
+      <button @click="testonly">fuck</button>
+    </div>
   </scroll-view>  
 </template>
 
@@ -45,6 +48,23 @@ export default {
           })
         }
       })
+    },
+    testonly () {
+      wx.request({
+        url: 'https://api.github.com/users/lenconda/gists',
+        data: {},
+        method: 'GET', // OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, CONNECT
+        // header: {}, // 设置请求的 header
+        success: res => {
+          // success
+          console.log('succeeded')
+          console.log(res)
+        },
+        fail: res => {
+          // fail
+          console.log('failed')
+        }
+      })
     }
   }
 }
@@ -67,5 +87,8 @@ export default {
     border-radius: 50%;
     border: 2px solid rgba(236, 236, 236, .8);
   }
+}
+.favorites {
+  width: 100%;
 }
 </style>
