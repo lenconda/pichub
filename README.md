@@ -1,6 +1,6 @@
-# mpvuelearn
+# Tupia
 
-> MPVUE study
+> Tupia精选壁纸 微信小程序
 
 ## Build Setup
 
