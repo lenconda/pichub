@@ -1,7 +1,7 @@
 {
-  "name": "tupia",
+  "name": "pichub",
   "version": "1.0.0",
-  "description": "Tupia Weixin mini program.",
+  "description": "Pichub Weixin mini program.",
   "author": "Lenconda <1053464288@qq.com>",
   "private": true,
   "scripts": {
