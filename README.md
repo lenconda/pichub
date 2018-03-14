@@ -1,6 +1,6 @@
-# Tupia
+# PICHUB
 
-> Tupia精选壁纸 微信小程序
+> Pichub精选壁纸 - 微信小程序 - 前端代码
 
 ## Build Setup
 
