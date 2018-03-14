@@ -15,7 +15,8 @@ export default {
       backgroundTextStyle: 'light',
       navigationBarBackgroundColor: '#000',
       navigationBarTitleText: 'Pichub精选壁纸',
-      navigationBarTextStyle: 'white'
+      navigationBarTextStyle: 'white',
+      backgroundColor: '#000'
     },
     tabBar: {
       color: '#dddddd',
