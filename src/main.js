@@ -14,7 +14,7 @@ export default {
     window: {
       backgroundTextStyle: 'light',
       navigationBarBackgroundColor: '#000',
-      navigationBarTitleText: 'Tupia精选壁纸',
+      navigationBarTitleText: 'Pichub精选壁纸',
       navigationBarTextStyle: 'white'
     },
     tabBar: {
