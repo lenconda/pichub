@@ -28,10 +28,13 @@ export default {
     },
     getUserInfo () {
       wx.login({
-        success: () => {
+        success: r => {
+          var code = r.code
+          console.log(code)
           wx.getUserInfo({
             success: res => {
               // this.userInfo = res.userInfo
+              console.log(res)
             }
           })
         }
@@ -40,7 +43,6 @@ export default {
   },
   mounted () {
     this.getUserInfo()
-    console.log(this.$root.$mp.query.data)
   }
   // onReachBottom () {
   //   console.log('触底')
