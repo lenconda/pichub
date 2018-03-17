@@ -1,6 +1,8 @@
 <template>
   <view>
-    <img mode="widthFix" src="https://images.unsplash.com/photo-1518658605361-756f5de4a582?ixlib=rb-0.3.5&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=1080&fit=max&ixid=eyJhcHBfaWQiOjIyNTM1fQ&s=e8354115a3f71a1aa296012725edd683" @click="previewImg">
+    <div class="wrapper">
+      <img mode="widthFix" src="https://images.unsplash.com/photo-1518658605361-756f5de4a582?ixlib=rb-0.3.5&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=1080&fit=max&ixid=eyJhcHBfaWQiOjIyNTM1fQ&s=e8354115a3f71a1aa296012725edd683" @click="previewImg">
+    </div>
     <div class="controls">
       <div class="item" @click="saveToAlbum">
         <div class="download"></div>
@@ -71,9 +73,19 @@ export default {
 <style lang="less" scoped>
 view {
   position: relative;
-  img {
-    width: 100%;
+  height: 100%;
+  .wrapper {
+    height: 100%;
+    box-sizing: border-box;
+    padding-bottom: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    img {
+      width: 100%;
+    }
   }
+  
   .controls {
     width: 100%;
     height: 50px;

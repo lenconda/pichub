@@ -1,14 +1,9 @@
 <template>
   <scroll-view>
-    <navigator>
+    <navigator v-for="(item, index) in pictures" :url="'/pages/detail/detail?id=' + item.id">
       <div class="img-wrapper">
-        <img mode="widthFix" src="https://images.unsplash.com/photo-1518871886039-9597decd52af?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=484b1b55d541b5706c884331ff15d4da&auto=format&fit=crop&w=662&q=80" alt="">
-      </div>
-    </navigator>
-    <navigator :url="['/pages/detail/detail']">
-      <div class="img-wrapper">
-        <span class="like" @tap.stop="like"></span>
-        <img mode="widthFix" src="https://images.unsplash.com/photo-1496134732667-ae8d2853a045?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=e4dd1c9106a69065ccfa21a36cfb53b1&auto=format&fit=crop&w=1350&q=80" alt="">
+        <span class="like" :class="{liked: item.liked == 1}" @tap.stop="like(item.liked == 1 ? 1 : 0, item.id, index)"></span>
+        <img mode="widthFix" :src="'https://pichub.oss-cn-shanghai.aliyuncs.com/' + item.regular">
       </div>
     </navigator>
   </scroll-view>
@@ -18,34 +13,118 @@
 export default {
   data () {
     return {
-      motto: 'Hello World',
-      userInfo: {}
+      userInfo: {},
+      pictures: [],
+      page: 1,
+      infinited: false
     }
   },
   methods: {
-    like () {
-      console.log('test')
+    like (action, likeid, index) {
+      wx.request({
+        url: `${this.GLOBAL.api_host}/pichub/like?action=${action}&likeid=${likeid}&openid=${wx.getStorageSync('openid')}`,
+        data: {},
+        method: 'GET',
+        // header: {}, // 设置请求的 header
+        success: result => {
+          // success
+          if (result.data.status == 1) {
+            wx.showToast({
+              title: result.data.message,
+              icon: 'success'
+            })
+            // action = 0 收藏
+            if (result.data.aciton == 0) {
+              this.pictures[index].liked = 1
+            } else {
+              this.pictures[index].liked = 0
+            }
+          } else {
+            wx.showToast({
+              title: result.data.message,
+              icon: 'none'
+            })
+          }
+        },
+        fail: () => {
+          wx.showToast({
+            title: result.data.message,
+            icon: 'none'
+          })
+        }
+      })
     },
     getUserInfo () {
       wx.login({
-        success: () => {
-          wx.getUserInfo({
-            success: (res) => {
-              // this.userInfo = res.userInfo
-              console.log(res.userInfo)
+        success: r => {
+          wx.request({
+            url: `${this.GLOBAL.api_host}/pichub/getid?code=${r.code}`,
+            method: 'GET',
+            // header: {}, // 设置请求的 header
+            success: result => {
+              // success
+              wx.setStorageSync('openid', result.data.openid)
+            },
+            fail: () => {
+              // fail
+              console.log('failed')
             }
           })
         }
       })
+    },
+    getPictures (action, page) {
+      if (!this.infinited) {
+        wx.request({
+          url: `${this.GLOBAL.api_host}/pichub/trend?action=${action}&page=${page}&openid=${wx.getStorageSync('openid')}`,
+          method: 'GET',
+          // header: {}, // 设置请求的 header
+          success: result => {
+            this.infinited = result.data.infinited
+            if (action == 1) {
+              this.page++
+              for (var i = 0; i < result.data.lists.length; i++) {
+                this.pictures.push(result.data.lists[i])
+              }
+            } else {
+              this.pictures = result.data.lists
+              this.page = 2
+            }
+          },
+          fail: () => {
+            // fail
+            console.log('failed')
+          }
+        })
+      }
     }
   },
   mounted () {
     this.getUserInfo()
-    console.log(this.$root.$mp.query.data)
+    this.getPictures(0, 1)
+  },
+  onReachBottom () {
+    this.getPictures(1, this.page)
+  },
+  onPullDownRefresh () {
+    wx.request({
+      url: `${this.GLOBAL.api_host}/pichub/trend?action=0&page=1&openid=${wx.getStorageSync('openid')}`,
+      data: {},
+      method: 'GET',
+      // header: {}, // 设置请求的 header
+      success: result => {
+        // success
+        this.infinited = result.data.infinited
+        this.pictures = result.data.lists
+        this.page = 2
+        wx.stopPullDownRefresh()
+      },
+      fail: () => {
+        // fail
+        console.log('failed')
+      }
+    })
   }
-  // onReachBottom () {
-  //   console.log('触底')
-  // }
 }
 </script>
 
@@ -61,6 +140,7 @@ scroll-view {
       img {
         flex-shrink: 0;
         width: 100%;
+        background: url('data:image/gif;base64,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') center center no-repeat;
       }
       .like {
         width: 21px;
