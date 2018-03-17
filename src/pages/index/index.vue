@@ -1,14 +1,9 @@
 <template>
   <scroll-view>
-    <navigator :url="['/pages/detail/detail']">
+    <navigator v-for="(item, index) in pictures" :url="'/pages/detail/detail?id=' + item.id">
       <div class="img-wrapper">
         <span class="like" @tap.stop="like"></span>
-        <img mode="widthFix" src="https://images.unsplash.com/photo-1519316500492-7d95d2b8c462?ixlib=rb-0.3.5&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=1080&fit=max&ixid=eyJhcHBfaWQiOjIyNTM1fQ&s=630a9923eb46d1eab1dd3d3b1b623545" alt="">
-      </div>
-    </navigator>
-    <navigator>
-      <div class="img-wrapper">
-        <img mode="widthFix" src="https://images.unsplash.com/photo-1520468278-da8f5773bc53?ixlib=rb-0.3.5&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=1080&fit=max&ixid=eyJhcHBfaWQiOjIyNTM1fQ&s=813a782b2e303d0f85ba87e3907d0964" alt="">
+        <img mode="widthFix" :src="'https://pichub.oss-cn-shanghai.aliyuncs.com/' + item.regular">
       </div>
     </navigator>
   </scroll-view>
@@ -19,7 +14,10 @@ export default {
   data () {
     return {
       motto: 'Hello World',
-      userInfo: {}
+      userInfo: {},
+      pictures: [],
+      page: 1,
+      infinited: false
     }
   },
   methods: {
@@ -29,24 +27,55 @@ export default {
     getUserInfo () {
       wx.login({
         success: r => {
-          var code = r.code
-          console.log(code)
-          wx.getUserInfo({
-            success: res => {
-              // this.userInfo = res.userInfo
-              console.log(res)
+          wx.request({
+            url: `${this.GLOBAL.api_host}/pichub/getid?code=${r.code}`,
+            method: 'GET',
+            // header: {}, // 设置请求的 header
+            success: result => {
+              // success
+              wx.setStorageSync('openid', result.data.openid)
+            },
+            fail: () => {
+              // fail
+              console.log('failed')
             }
           })
+        }
+      })
+    },
+    getPictures (action, page) {
+      wx.request({
+        url: `${this.GLOBAL.api_host}/pichub/lists?action=${action}&page=${page}&openid=${wx.getStorageSync('openid')}`,
+        method: 'GET',
+        // header: {}, // 设置请求的 header
+        success: result => {
+          this.infinited = result.data.infinited
+          if (!this.infinited) {
+            if (action == 1) {
+              this.page++
+              for (var i = 0; i < result.data.lists.length; i++) {
+                this.pictures.push(result.data.lists[i])
+              }
+            } else {
+              this.pictures = result.data.lists
+              this.page = 2
+            }
+          }
+        },
+        fail: () => {
+          // fail
+          console.log('failed')
         }
       })
     }
   },
   mounted () {
     this.getUserInfo()
+    this.getPictures(0, 1)
+  },
+  onReachBottom () {
+    this.getPictures(1, this.page)
   }
-  // onReachBottom () {
-  //   console.log('触底')
-  // }
 }
 </script>
 

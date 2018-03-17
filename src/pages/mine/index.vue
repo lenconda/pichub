@@ -23,14 +23,25 @@ export default {
   methods: {
     getInfo () {
       wx.login({
-        success: res => {
-          wx.getUserInfo({
-            success: res => {
+        success: r => {
+          wx.request({
+            url: `${this.GLOBAL.api_host}/pichub/test?code=${r.code}`,
+            method: 'GET',
+            // header: {}, // 设置请求的 header
+            success: result => {
               // success
-              this.userInfo = res.userInfo
+              wx.setStorageSync('openid', result.data.openid)
             },
             fail: () => {
               // fail
+              console.log('failed')
+            }
+          })
+          wx.getUserInfo({
+            success: res => {
+              this.userInfo = res.userInfo
+            },
+            fail: () => {
               wx.showToast({
                 title: '遇到错误',
                 icon: 'none',
@@ -51,7 +62,7 @@ export default {
     },
     testonly () {
       wx.request({
-        url: 'https://api.github.com/users/lenconda/gists',
+        url: `${this.GLOBAL.api_host}/cuo?id=${wx.getStorageSync('openid')}`,
         data: {},
         method: 'GET', // OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, CONNECT
         // header: {}, // 设置请求的 header
