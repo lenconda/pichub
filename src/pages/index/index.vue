@@ -2,7 +2,7 @@
   <scroll-view>
     <navigator v-for="(item, index) in pictures" :url="'/pages/detail/detail?id=' + item.id">
       <div class="img-wrapper">
-        <span class="like" @tap.stop="like"></span>
+        <span class="like" :class="{liked: item.liked == 1}" @tap.stop="like"></span>
         <img mode="widthFix" :src="'https://pichub.oss-cn-shanghai.aliyuncs.com/' + item.regular">
       </div>
     </navigator>
@@ -75,6 +75,25 @@ export default {
   },
   onReachBottom () {
     this.getPictures(1, this.page)
+  },
+  onPullDownRefresh () {
+    wx.request({
+      url: `${this.GLOBAL.api_host}/pichub/lists?action=0&page=1&openid=${wx.getStorageSync('openid')}`,
+      data: {},
+      method: 'GET',
+      // header: {}, // 设置请求的 header
+      success: result => {
+        // success
+        this.infinited = result.data.infinited
+        this.pictures = result.data.lists
+        this.page = 2
+        wx.stopPullDownRefresh()
+      },
+      fail: () => {
+        // fail
+        console.log('failed')
+      }
+    })
   }
 }
 </script>
