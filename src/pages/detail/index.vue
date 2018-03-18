@@ -1,14 +1,14 @@
 <template>
   <view>
     <div class="wrapper">
-      <img mode="widthFix" src="https://images.unsplash.com/photo-1518658605361-756f5de4a582?ixlib=rb-0.3.5&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=1080&fit=max&ixid=eyJhcHBfaWQiOjIyNTM1fQ&s=e8354115a3f71a1aa296012725edd683" @click="previewImg">
+      <img mode="widthFix" :src="'https://pichub.oss-cn-shanghai.aliyuncs.com/' + detail.regular" @click="previewImg">
     </div>
     <div class="controls">
-      <div class="item" @click="saveToAlbum">
+      <div class="item" @click="previewImg">
         <div class="download"></div>
       </div>
-      <div class="item">
-        <div class="like"></div>
+      <div class="item" @click="like(detail.liked == 1 ? 1 : 0)">
+        <div class="like" :class="{liked: detail.liked == 1}"></div>
       </div>
     </div>
   </view>
@@ -18,51 +18,118 @@
 export default {
   data () {
     return {
-      
+      detail: {}
     }
   },
   mounted () {
     console.log(this.$root.$mp.query.id)
+    if (wx.getStorageSync('openid')) {
+      wx.request({
+        url: `${this.GLOBAL.api_host}/pichub/detail?id=${this.$root.$mp.query.id}&openid=${wx.getStorageSync('openid')}`,
+        method: 'GET',
+        // header: {}, 
+        success: res => {
+          // success
+          if (res.data.status == 1) {
+            this.detail = res.data.detail
+          } else {
+            wx.showToast({
+              title: res.data.message,
+              icon: 'none'
+            })
+          }
+        },
+        fail: () => {
+          // fail
+          wx.showToast({
+            title: '未知错误',
+            icon: 'none'
+          })
+        }
+      })
+    } else {
+      this.getUserInfo()
+    }
   },
   methods: {
     previewImg () {
       wx.previewImage({
-        current: 'https://images.unsplash.com/photo-1518658605361-756f5de4a582?ixlib=rb-0.3.5&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=1080&fit=max&ixid=eyJhcHBfaWQiOjIyNTM1fQ&s=e8354115a3f71a1aa296012725edd683', // 当前显示图片的链接，不填则默认为 urls 的第一张
-        urls: ['https://images.unsplash.com/photo-1518658605361-756f5de4a582?ixlib=rb-0.3.5&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=1080&fit=max&ixid=eyJhcHBfaWQiOjIyNTM1fQ&s=e8354115a3f71a1aa296012725edd683'],
-        success: function(res){
+        current: this.detail.raw, // 当前显示图片的链接，不填则默认为 urls 的第一张
+        urls: [this.detail.raw],
+        success: res => {
           // success
-          console.log(res)
+          wx.showToast({
+            title: '长按图片弹出菜单以保存...',
+            icon: 'none'
+          })
         },
-        fail: function() {
+        fail: () => {
           // fail
-          console.log(res)
-        },
-        complete: function() {
-          // complete
+          wx.showToast({
+            title: '未知错误',
+            icon: 'none'
+          })
         }
       })
     },
-    saveToAlbum () {
-      wx.downloadFile({
-        url: 'https://images.unsplash.com/photo-1518658605361-756f5de4a582?ixlib=rb-0.3.5&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=1080&fit=max&ixid=eyJhcHBfaWQiOjIyNTM1fQ&s=e8354115a3f71a1aa296012725edd683',
-        success: res => {
-          console.log('succeed')
-          console.log(res)
-          wx.saveImageToPhotosAlbum({  
-            filePath: res.tempFilePath,  
-            success: res => {  
-              console.log('succeed')
-              console.log(res)  
-            },  
-            fail: res => {  
-              console.log(res)  
-              console.log('fail')  
-            }  
+    like (action) {
+      if (wx.getStorageSync('openid')) {
+        wx.request({
+          url: `${this.GLOBAL.api_host}/pichub/like?action=${action}&likeid=${this.detail.id}&openid=${wx.getStorageSync('openid')}`,
+          data: {},
+          method: 'GET',
+          // header: {}, // 设置请求的 header
+          success: result => {
+            // success
+            if (result.data.status == 1) {
+              wx.showToast({
+                title: result.data.message,
+                icon: 'success'
+              })
+              // action = 0 收藏
+              if (result.data.aciton == 0) {
+                this.detail.liked = 1
+              } else {
+                this.detail.liked = 0
+              }
+            } else {
+              wx.showToast({
+                title: result.data.message,
+                icon: 'none'
+              })
+            }
+          },
+          fail: () => {
+            wx.showToast({
+              title: result.data.message,
+              icon: 'none'
+            })
+          }
+        })
+      } else {
+        this.getUserInfo()
+        wx.showToast({
+          title: '请稍后重试',
+          icon: 'none'
+        })
+      }
+    },
+    getUserInfo () {
+      wx.login({
+        success: r => {
+          wx.request({
+            url: `${this.GLOBAL.api_host}/pichub/getid?code=${r.code}`,
+            method: 'GET',
+            // header: {}, // 设置请求的 header
+            success: result => {
+              // success
+              wx.setStorageSync('openid', result.data.openid)
+            },
+            fail: () => {
+              // fail
+              console.log('failed')
+            }
           })
-        },
-        fail: res => {
-          console.log('fail')
-          console.log(res)
         }
       })
     }

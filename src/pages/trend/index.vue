@@ -21,38 +21,46 @@ export default {
   },
   methods: {
     like (action, likeid, index) {
-      wx.request({
-        url: `${this.GLOBAL.api_host}/pichub/like?action=${action}&likeid=${likeid}&openid=${wx.getStorageSync('openid')}`,
-        data: {},
-        method: 'GET',
-        // header: {}, // 设置请求的 header
-        success: result => {
-          // success
-          if (result.data.status == 1) {
-            wx.showToast({
-              title: result.data.message,
-              icon: 'success'
-            })
-            // action = 0 收藏
-            if (result.data.aciton == 0) {
-              this.pictures[index].liked = 1
+      if (wx.getStorageSync('openid')) {
+        wx.request({
+          url: `${this.GLOBAL.api_host}/pichub/like?action=${action}&likeid=${likeid}&openid=${wx.getStorageSync('openid')}`,
+          data: {},
+          method: 'GET',
+          // header: {}, // 设置请求的 header
+          success: result => {
+            // success
+            if (result.data.status == 1) {
+              wx.showToast({
+                title: result.data.message,
+                icon: 'success'
+              })
+              // action = 0 收藏
+              if (result.data.aciton == 0) {
+                this.pictures[index].liked = 1
+              } else {
+                this.pictures[index].liked = 0
+              }
             } else {
-              this.pictures[index].liked = 0
+              wx.showToast({
+                title: result.data.message,
+                icon: 'none'
+              })
             }
-          } else {
+          },
+          fail: () => {
             wx.showToast({
               title: result.data.message,
               icon: 'none'
             })
           }
-        },
-        fail: () => {
-          wx.showToast({
-            title: result.data.message,
-            icon: 'none'
-          })
-        }
-      })
+        })
+      } else {
+        this.getUserInfo()
+        wx.showToast({
+          title: '请稍后重试',
+          icon: 'none'
+        })
+      }
     },
     getUserInfo () {
       wx.login({
