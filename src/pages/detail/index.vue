@@ -22,7 +22,6 @@ export default {
     }
   },
   mounted () {
-    console.log(this.$root.$mp.query.id)
     if (wx.getStorageSync('openid')) {
       wx.request({
         url: `${this.GLOBAL.api_host}/pichub/detail?id=${this.$root.$mp.query.id}&openid=${wx.getStorageSync('openid')}`,
