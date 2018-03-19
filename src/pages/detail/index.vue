@@ -1,7 +1,7 @@
 <template>
   <view>
     <div class="wrapper">
-      <img mode="widthFix" :src="'https://pichub.oss-cn-shanghai.aliyuncs.com/' + detail.regular" @click="previewImg">
+      <img v-if="detail.regular != undefined" mode="widthFix" :src="'https://pichub.oss-cn-shanghai.aliyuncs.com/' + detail.regular" @click="previewImg">
     </div>
     <div class="controls">
       <div class="item" @click="previewImg">
